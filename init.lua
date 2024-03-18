@@ -153,10 +153,17 @@ vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
-
+-- Note that m corresponds to the meta key (on mac-os this is opt)
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Escape key as jk
+vim.keymap.set('i', 'jk', '<esc>', { desc = 'alternative escape mapping' })
+-- and kj
+vim.keymap.set('i', 'kj', '<esc>', { desc = 'alternative escape mapping' })
+-- Reset hashtag symbol to option+3
+vim.keymap.set('i', '<m-3>', '#', { desc = 'hashtag symbol' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -186,6 +193,17 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- Quarto Commands
+-- Insert python chunk
+vim.keymap.set({ 'n' }, '<m-i>', 'i```{python}<cr>```<esc>ko', { desc = '[i]nsert python code chunk' })
+vim.keymap.set({ 'i' }, '<m-i>', '```{python}<cr>```<esc>ko', { desc = '[i]nsert python code chunk' })
+-- Insert r chunk
+vim.keymap.set({ 'n' }, '<s-m-l>', 'i```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
+vim.keymap.set({ 'i' }, '<s-m-l>', '```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
+
+-- Create ipython terminal
+vim.keymap.set({ 'n' }, '<leader>ci', ':split term://ipython', { desc = '[c]ode repl [i]python' })
+-- Create r console
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -210,6 +228,8 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+-- select location to load luasnip snippets from
+--require('luasnip.loaders.from_lua').load { paths = { '~/.config/nvim/lua/custom/luasnip/' } }
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -236,7 +256,57 @@ require('lazy').setup({
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
-
+  -- markdown
+  -- MarkdownPreview
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    build = 'cd app && yarn install',
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown' }
+    end,
+    ft = { 'markdown' },
+  },
+  {
+    'plasticboy/vim-markdown',
+    branch = 'master',
+    require = { 'godlygeek/tabular' },
+  },
+  -- quarto
+  {
+    'quarto-dev/quarto-nvim',
+    opts = {},
+    dependencies = {
+      'jmbuhr/otter.nvim',
+      opts = {},
+    },
+  },
+  -- VimTex
+  {
+    'lervag/vimtex',
+    init = function()
+      vim.g.vimtex_view_method = 'skim'
+      vim.g.vimtex_view_general_options = [[--unique file:@pdf\#src:@line@tex]]
+      vim.g.vimtex_quickfix_enabled = 1
+      vim.g.vimtex_syntax_enabled = 1
+      vim.g.vimtex_quickfix_mode = 0
+      vim.g.vimtex_view_skim_sync = 1
+      vim.g.vimtex_view_skim_activate = 1
+    end,
+  },
+  -- LuaSnip
+  {
+    'L3MON4D3/LuaSnip',
+    -- follow latest release.
+    version = 'v2.2', -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    build = 'make install_jsregexp',
+  },
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = true,
+  },
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following lua:
   --    require('gitsigns').setup({ ... })
@@ -522,6 +592,7 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -534,7 +605,8 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
+        r_language_server = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -682,8 +754,8 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
-
+          --  I changed this to enter from <c-y> expand_or_jump
+          ['<tab>'] = cmp.mapping.confirm { select = true },
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
           --  completions whenever it has completion options available.
@@ -709,6 +781,7 @@ require('lazy').setup({
           end, { 'i', 's' }),
         },
         sources = {
+          { name = 'otter' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -783,7 +856,9 @@ require('lazy').setup({
       ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
-      highlight = { enable = true },
+      highlight = {
+        enable = true,
+      },
       indent = { enable = true },
     },
     config = function(_, opts)
@@ -810,8 +885,8 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
