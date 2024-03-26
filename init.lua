@@ -189,6 +189,7 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
+--  <C-w> opens
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
@@ -200,9 +201,16 @@ vim.keymap.set({ 'i' }, '<m-i>', '```{python}<cr>```<esc>ko', { desc = '[i]nsert
 -- Insert r chunk
 vim.keymap.set({ 'n' }, '<s-m-l>', 'i```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
 vim.keymap.set({ 'i' }, '<s-m-l>', '```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
-
+-- Toggle terminal keymaps
+local trim_spaces = true
+vim.keymap.set('v', '<space><cr>', function()
+  require('toggleterm').send_lines_to_terminal('single_line', trim_spaces, { args = vim.v.count })
+end)
+vim.keymap.set('n', '<s><t>', function()
+  require('toggleterm').toggle()
+end)
 -- Create ipython terminal
-vim.keymap.set({ 'n' }, '<leader>ci', ':split term://ipython', { desc = '[c]ode repl [i]python' })
+-- vim.keymap.set({ 'n' }, '<leader>ci', ':split term://ipython', { desc = '[c]ode repl [i]python' })
 -- Create r console
 
 -- [[ Basic Autocommands ]]
@@ -239,7 +247,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  To update plugins, you can run
 --    :Lazy update
---
+
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
@@ -256,52 +264,6 @@ require('lazy').setup({
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
-  -- markdown
-  -- MarkdownPreview
-  {
-    'iamcco/markdown-preview.nvim',
-    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
-    build = 'cd app && yarn install',
-    init = function()
-      vim.g.mkdp_filetypes = { 'markdown' }
-    end,
-    ft = { 'markdown' },
-  },
-  {
-    'plasticboy/vim-markdown',
-    branch = 'master',
-    require = { 'godlygeek/tabular' },
-  },
-  -- quarto
-  {
-    'quarto-dev/quarto-nvim',
-    opts = {},
-    dependencies = {
-      'jmbuhr/otter.nvim',
-      opts = {},
-    },
-  },
-  -- VimTex
-  {
-    'lervag/vimtex',
-    init = function()
-      vim.g.vimtex_view_method = 'skim'
-      vim.g.vimtex_view_general_options = [[--unique file:@pdf\#src:@line@tex]]
-      vim.g.vimtex_quickfix_enabled = 1
-      vim.g.vimtex_syntax_enabled = 1
-      vim.g.vimtex_quickfix_mode = 0
-      vim.g.vimtex_view_skim_sync = 1
-      vim.g.vimtex_view_skim_activate = 1
-    end,
-  },
-  -- LuaSnip
-  {
-    'L3MON4D3/LuaSnip',
-    -- follow latest release.
-    version = 'v2.2', -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-    -- install jsregexp (optional!).
-    build = 'make install_jsregexp',
-  },
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
@@ -713,33 +675,37 @@ require('lazy').setup({
           return 'make install_jsregexp'
         end)(),
       },
+      -- follow latest release.
       'saadparwaiz1/cmp_luasnip',
-
       -- Adds other completion capabilities.
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
-
       -- If you want to add a bunch of pre-configured snippets,
       --    you can use this plugin to help you. It even has snippets
       --    for various frameworks/libraries/etc. but you will have to
       --    set up the ones that are useful for you.
-      -- 'rafamadriz/friendly-snippets',
+      'rafamadriz/friendly-snippets',
     },
+
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
-
+      require('luasnip.loaders.from_vscode').lazy_load()
       cmp.setup {
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
           end,
         },
-        completion = { completeopt = 'menu,menuone,noinsert' },
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
+        --completion = { completeopt = 'menu,menuone,noinsert' },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
@@ -747,9 +713,9 @@ require('lazy').setup({
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
           -- Select the [n]ext item
-          ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-j>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-k>'] = cmp.mapping.select_prev_item(),
 
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
@@ -781,7 +747,7 @@ require('lazy').setup({
           end, { 'i', 's' }),
         },
         sources = {
-          { name = 'otter' },
+          -- { name = 'otter' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -893,7 +859,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you have a Nerd Font, set icons to an empty table which will use the
