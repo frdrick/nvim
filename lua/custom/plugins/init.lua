@@ -2,4 +2,10 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {}
+return {
+  -- to fix error message for nvim-dap
+  {
+    'mfussenegger/nvim-dap',
+    config = function() end,
+  },
+}

@@ -152,18 +152,13 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
+-- For custom keybinds
+require("custom.keymaps")
 --  See `:help vim.keymap.set()`
 -- Note that m corresponds to the meta key (on mac-os this is opt)
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Escape key as jk
-vim.keymap.set('i', 'jk', '<esc>', { desc = 'alternative escape mapping' })
--- and kj
-vim.keymap.set('i', 'kj', '<esc>', { desc = 'alternative escape mapping' })
--- Reset hashtag symbol to option+3
-vim.keymap.set('i', '<m-3>', '#', { desc = 'hashtag symbol' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -178,33 +173,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
---  <C-w> opens
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
--- Quarto Commands
--- Insert python chunk
-vim.keymap.set({ 'n' }, '<m-i>', 'i```{python}<cr>```<esc>ko', { desc = '[i]nsert python code chunk' })
-vim.keymap.set({ 'i' }, '<m-i>', '```{python}<cr>```<esc>ko', { desc = '[i]nsert python code chunk' })
--- Insert r chunk
-vim.keymap.set({ 'n' }, '<s-m-l>', 'i```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
-vim.keymap.set({ 'i' }, '<s-m-l>', '```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
 -- Toggle terminal keymaps
 local trim_spaces = true
 vim.keymap.set('v', '<space><cr>', function()
-  require('toggleterm').send_lines_to_terminal('single_line', trim_spaces, { args = vim.v.count })
+  require('toggleterm').send_lines_to_terminal('single_line', trim_spaces, { args = v.count })
 end)
 vim.keymap.set('n', '<s><t>', function()
   require('toggleterm').toggle()
@@ -212,7 +184,6 @@ end)
 -- Create ipython terminal
 -- vim.keymap.set({ 'n' }, '<leader>ci', ':split term://ipython', { desc = '[c]ode repl [i]python' })
 -- Create r console
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -713,9 +684,9 @@ require('lazy').setup({
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
           -- Select the [n]ext item
-          ['<C-j>'] = cmp.mapping.select_next_item(),
+          ['<C-n>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
-          ['<C-k>'] = cmp.mapping.select_prev_item(),
+          ['<C-p>'] = cmp.mapping.select_prev_item(),
 
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
