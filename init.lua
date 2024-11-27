@@ -153,7 +153,7 @@ vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
 -- For custom keybinds
-require("custom.keymaps")
+require 'custom.keymaps'
 --  See `:help vim.keymap.set()`
 -- Note that m corresponds to the meta key (on mac-os this is opt)
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
@@ -176,7 +176,7 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- Toggle terminal keymaps
 local trim_spaces = true
 vim.keymap.set('v', '<space><cr>', function()
-  require('toggleterm').send_lines_to_terminal('single_line', trim_spaces, { args = v.count })
+  require('toggleterm').send_lines_to_terminal('single_line', trim_spaces, { args = vim.v.count })
 end)
 vim.keymap.set('n', '<s><t>', function()
   require('toggleterm').toggle()
@@ -184,9 +184,41 @@ end)
 -- Create ipython terminal
 -- vim.keymap.set({ 'n' }, '<leader>ci', ':split term://ipython', { desc = '[c]ode repl [i]python' })
 -- Create r console
+local non_c_line_comments_by_filetype = {
+  lua = '--',
+  python = '#',
+  zsh = '#',
+  r = '#',
+  sql = '--',
+}
+
+local function comment_out(opts)
+  local line_comment = non_c_line_comments_by_filetype[vim.bo.filetype] or '//'
+  local start = math.min(opts.line1, opts.line2)
+  local finish = math.max(opts.line1, opts.line2)
+
+  vim.api.nvim_command(start .. ',' .. finish .. 's:^:' .. line_comment .. ':')
+  vim.api.nvim_command 'noh'
+end
+
+local function uncomment(opts)
+  local line_comment = non_c_line_comments_by_filetype[vim.bo.filetype] or '//'
+  local start = math.min(opts.line1, opts.line2)
+  local finish = math.max(opts.line1, opts.line2)
+
+  pcall(vim.api.nvim_command, start .. ',' .. finish .. 's:^\\(\\s\\{-\\}\\)' .. line_comment .. ':\\1:')
+  vim.api.nvim_command 'noh'
+end
+
+vim.api.nvim_create_user_command('CommentOut', comment_out, { range = true })
+vim.keymap.set('v', '<leader>co', ':CommentOut<CR>')
+vim.keymap.set('n', '<leader>co', ':CommentOut<CR>')
+
+vim.api.nvim_create_user_command('Uncomment', uncomment, { range = true })
+vim.keymap.set('v', '<leader>uc', ':Uncomment<CR>')
+vim.keymap.set('n', '<leader>uc', ':Uncomment<CR>')
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
-
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -718,7 +750,7 @@ require('lazy').setup({
           end, { 'i', 's' }),
         },
         sources = {
-          -- { name = 'otter' },
+          { name = 'otter' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
