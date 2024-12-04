@@ -31,8 +31,10 @@ vim.keymap.set('n', '<leader>mp', ':MarkdownPreviewToggle<cr>', { desc = '[m]ark
 
 -- Quarto Commands
 -- Insert python chunk
-vim.keymap.set({ 'n' }, '<m-i>', 'i```{python}<cr>```<esc>ko', { desc = '[i]nsert python code chunk' })
-vim.keymap.set({ 'i' }, '<m-i>', '```{python}<cr>```<esc>ko', { desc = '[i]nsert python code chunk' })
--- Insert r chunk
-vim.keymap.set({ 'n' }, '<s-m-l>', 'i```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
-vim.keymap.set({ 'i' }, '<s-m-l>', '```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
+--vim.keymap.set({ 'n' }, '<m-i>', 'i```{python}<cr>```<esc>ko', { desc = '[i]nsert python code chunk' })
+--vim.keymap.set({ 'i' }, '<m-i>', '```{python}<cr>```<esc>ko', { desc = '[i]nsert python code chunk' })
+---- Insert r chunk
+--vim.keymap.set({ 'n' }, '<s-m-l>', 'i```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
+--vim.keymap.set({ 'i' }, '<s-m-l>', '```{r}<cr>```<esc>ko', { desc = '[i]nsert r code chunk' })
+-- ipython terminal
+vim.keymap.set('n', '<leader>ci', ':split term://ipython<cr>', { desc = '[C]ode repl [i]python' })
