@@ -15,6 +15,7 @@ return { -- LSP Configuration & Plugins
           'pyright',
           'clangd',
           'marksman',
+          'texlab',
         },
       }
     end,
@@ -40,6 +41,19 @@ return { -- LSP Configuration & Plugins
   },
   {
     'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        'folke/lazydev.nvim',
+        ft = 'lua', -- only load on lua files
+        opts = {
+          library = {
+            -- See the configuration section for more details
+            -- Load luvit types when the `vim.uv` word is found
+            { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+          },
+        },
+      },
+    },
     config = function()
       -- Brief Aside: **What is LSP?**
       --
@@ -148,6 +162,24 @@ return { -- LSP Configuration & Plugins
       lspconfig.pyright.setup {}
       lspconfig.clangd.setup {}
       lspconfig.marksman.setup {}
+      -- lspconfig.texlab.setup {
+      --   filetypes = { 'tex', 'markdown' },
+      --   settings = {
+      --     texlab = {
+      --       build = {
+      --         executable = 'pdflatex',
+      --         args = { '-interaction=nonstopmode', '-synctex=1', '%f' },
+      --       },
+      --       forwardSearch = {
+      --         executable = 'zathura', -- Or your preferred PDF viewer
+      --         args = { '--synctex-forward', '%l:1:%f', '%p' },
+      --       },
+      --       chktex = {
+      --         onEdit = true,
+      --       },
+      --     },
+      --   },
+      -- }
     end,
   },
 }
