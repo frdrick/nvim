@@ -56,5 +56,26 @@ return {
       end,
       desc = '[M]arkdown',
     },
+    {
+      '<leader>cl',
+      function()
+        require('which-key').show { global = false }
+      end,
+      desc = '[L]ine',
+    },
+    {
+      '<leader>sa',
+      function()
+        require('which-key').show { global = false }
+      end,
+      desc = '[A]nd',
+    },
+    -- {
+    --   '<leader>sar',
+    --   function()
+    --     require('which-key').show { global = false }
+    --   end,
+    --   desc = '[R]eplace',
+    -- },
   },
 }

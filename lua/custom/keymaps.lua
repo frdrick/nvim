@@ -67,3 +67,6 @@ function ToggleLinebreak()
     vim.wo.linebreak = true
   end
 end
+-- Search and replace shortcut
+vim.keymap.set('n', '<leader>sar', ':%s//<left>', { desc = '[S]earch [A]nd [R]eplace' })
+vim.keymap.set('v', '<leader>sar', ':s//<left>', { desc = '[S]earch [A]nd [R]eplace' })
