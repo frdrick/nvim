@@ -22,13 +22,6 @@ return {
       desc = '[S]earch',
     },
     {
-      '<leader>t',
-      function()
-        require('which-key').show { global = false }
-      end,
-      desc = 'Neo[T]ree',
-    },
-    {
       '<leader>c',
       function()
         require('which-key').show { global = false }
@@ -70,12 +63,12 @@ return {
       end,
       desc = '[A]nd',
     },
-    -- {
-    --   '<leader>sar',
-    --   function()
-    --     require('which-key').show { global = false }
-    --   end,
-    --   desc = '[R]eplace',
-    -- },
+    {
+      '<leader>h',
+      function()
+        require('which-key').show { global = false }
+      end,
+      desc = '[H]arpoon',
+    },
   },
 }

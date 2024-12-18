@@ -7,22 +7,17 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
-vim.g.python3_host_prog = '/Users/freddymarten/miniconda/env_full'
+vim.env.PYTHONPATH = '/Users/freddymarten/miniforge3/bin/python'
+-- Set slime defualts
+vim.g.slime_target = 'tmux'
 
+-- Now we load our 3 files in the custom directory: keymaps.lua, options.lua and autocommands.lua
 -- For keybinds
 require 'custom.keymaps'
 -- For options
 require 'custom.options'
 -- For autocommands
 require 'custom.autocommands'
--- Create ipython terminal
--- local non_c_line_comments_by_filetype = {
---   lua = '--',
---   python = '#',
---   zsh = '#',
---   r = '#',
---   sql = '--',
--- }
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info

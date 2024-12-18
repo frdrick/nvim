@@ -1,5 +1,5 @@
 --  See `:help vim.keymap.set()`
--- Note that m corresponds to the meta key (on mac-os this is opt)
+-- Note ithat m corresponds to the meta key (on mac-os this is opt)
 -- local opts = { noremap = true, silent = true }
 
 -- local term_opts = { silent = true }
@@ -34,32 +34,15 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+vim.keymap.set('n', '<leader>dd', '<CMD>DiagnosticToggle<cr>', { desc = '[D]iagnostic toggle' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
--- Toggle terminal keymaps
-local trim_spaces = true
-vim.keymap.set('v', '<space><cr>', function()
-  require('toggleterm').send_lines_to_terminal('single_line', trim_spaces, { args = vim.v.count })
-end)
-vim.keymap.set('n', '<s><t>', function()
-  require('toggleterm').toggle()
-end)
--- ipython terminal
--- TODO: Setup ipython terminal properly
-vim.keymap.set('n', '<leader>ci', ':split term://ipython', { desc = '[C]ode repl [i]python' })
 -- markdownpreview
-vim.keymap.set('n', '<leader>mp', ':MarkdownPreviewToggle<cr>', { desc = '[M]arkdown [P]review' })
+vim.keymap.set('n', '<leader>mp', '<CMD>MarkdownPreviewToggle<cr>', { desc = '[M]arkdown [P]review' })
 
 -- Set linebreak
-vim.keymap.set('n', '<leader>clb', ':lua ToggleLinebreak()<cr>', { desc = '[C]ode [L]ine[B]reak' })
+vim.keymap.set('n', '<leader>clb', '<CMD>lua ToggleLinebreak()<cr>', { desc = '[C]ode [L]ine[B]reak' })
 function ToggleLinebreak()
   if vim.wo.linebreak then
     vim.wo.linebreak = false
@@ -70,3 +53,5 @@ end
 -- Search and replace shortcut
 vim.keymap.set('n', '<leader>sar', ':%s//<left>', { desc = '[S]earch [A]nd [R]eplace' })
 vim.keymap.set('v', '<leader>sar', ':s//<left>', { desc = '[S]earch [A]nd [R]eplace' })
+-- Oil shortcut
+vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })

@@ -10,3 +10,33 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+vim.api.nvim_create_user_command('DiagnosticToggle', function()
+  local config = vim.diagnostic.config
+  local vt = config().virtual_text
+  config {
+    virtual_text = not vt,
+    underline = not vt,
+    signs = not vt,
+  }
+end, { desc = 'toggle diagnostic' })
+
+-- let conda use current working environment
+-- Get the Python path for the active Conda environment
+vim.api.nvim_create_user_command('GetPythonPath', function()
+  -- Get the Conda prefix from the shell environment
+  local conda_prefix = os.getenv 'CONDA_PREFIX'
+  -- local conda_path = conda_prefix .. '/bin/python'
+  -- print(conda_path)
+  print(conda_prefix)
+end, { desc = 'get conda environment' })
+
+-- require('lspconfig').pyright.setup {
+--   on_new_config = function(config, root_dir)
+--     -- Dynamically set the Python path before starting the LSP
+--     config.settings = config.settings or {}
+--     config.settings.python = config.settings.python or {}
+--     config.settings.python.pythonPath = get_python_path()
+--   end,
+--   root_dir = util.root_pattern('.git', 'pyrightconfig.json', 'setup.py'),
+-- }

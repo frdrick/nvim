@@ -14,8 +14,17 @@ return { -- Collection of various small independent plugins/modules
     -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
     -- - sd'   - [S]urround [D]elete [']quotes
     -- - sr)'  - [S]urround [R]eplace [)] [']
-    require('mini.surround').setup()
-
+    require('mini.surround').setup {
+      mappings = {
+        add = ';;',
+        delete = ';d',
+        find = ';f',
+        find_left = ';F',
+        highlight = ';h',
+        replace = ';r',
+        update_n_lines = ';n',
+      },
+    }
     -- Simple and easy statusline.
     --  You could remove this setup call if you don't like it,
     --  and try some other statusline plugin
