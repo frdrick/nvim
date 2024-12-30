@@ -37,9 +37,9 @@ return {
         :find()
     end
     -- Fuzzy find harpoon buffers using telescope
-    vim.keymap.set('n', '<leader>sh', function()
+    vim.keymap.set('n', '<leader>hf', function()
       toggle_telescope(harpoon:list())
-    end, { desc = '[S]earch [H]arpoon' })
+    end, { desc = '[H]arpoon [F]ind' })
 
     -- Select specific harpoon buffers
     vim.keymap.set('n', '<leader>h1', function()

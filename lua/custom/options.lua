@@ -113,3 +113,6 @@ vim.opt.scrolloff = 10
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
+
+-- Conceal Level for obsidian
+vim.opt.conceallevel = 1

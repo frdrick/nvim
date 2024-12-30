@@ -15,11 +15,25 @@ return {
       desc = 'Buffer Local Keymaps (which-key)',
     },
     {
+      '<leader>f',
+      function()
+        require('which-key').show { global = false }
+      end,
+      desc = '[F]ind',
+    },
+    {
       '<leader>s',
       function()
         require('which-key').show { global = false }
       end,
-      desc = '[S]earch',
+      desc = '[S]lime',
+    },
+    {
+      '<leader>sr',
+      function()
+        require('which-key').show { global = false }
+      end,
+      desc = '[R]un',
     },
     {
       '<leader>c',
@@ -43,21 +57,21 @@ return {
       desc = '[W]orkspace',
     },
     {
-      '<leader>m',
+      '<leader>p',
       function()
         require('which-key').show { global = false }
       end,
-      desc = '[M]arkdown',
+      desc = '[P]review',
     },
     {
-      '<leader>cl',
+      '<leader>l',
       function()
         require('which-key').show { global = false }
       end,
       desc = '[L]ine',
     },
     {
-      '<leader>sa',
+      '<leader>fa',
       function()
         require('which-key').show { global = false }
       end,
@@ -69,6 +83,20 @@ return {
         require('which-key').show { global = false }
       end,
       desc = '[H]arpoon',
+    },
+    {
+      '<leader>ss',
+      function()
+        require('which-key').show { global = false }
+      end,
+      desc = '[S]tart',
+    },
+    {
+      '<leader>sq',
+      function()
+        require('which-key').show { global = false }
+      end,
+      desc = '[Q]uit',
     },
   },
 }

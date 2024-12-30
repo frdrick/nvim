@@ -1,52 +1,45 @@
 return {
-  'hrsh7th/nvim-cmp',
-  dependencies = {
-    'hrsh7th/cmp-nvim-lsp', -- LSP completion source
-    'hrsh7th/cmp-buffer', -- Buffer completion source
-    'hrsh7th/cmp-path', -- Filesystem path completion
-    'hrsh7th/cmp-cmdline', -- Command-line completion
-    'L3MON4D3/LuaSnip', -- Snippet engine
-    'saadparwaiz1/cmp_luasnip', -- Snippet completions
-  },
-  config = function()
-    local cmp = require 'cmp'
-    cmp.setup {
-      snippet = {
-        expand = function(args)
-          require('luasnip').lsp_expand(args.body) -- For `luasnip` users
-        end,
-      },
-      mapping = cmp.mapping.preset.insert {
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm { select = true }, -- Accept currently selected item.
-      },
-      sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-      }, {
-        { name = 'buffer' },
-        { name = 'path' },
-      }),
-    }
+  {
+    'saghen/blink.cmp',
+    lazy = false, -- lazy loading handled internally
+    -- optional: provides snippets for the snippet source
+    dependencies = 'rafamadriz/friendly-snippets',
+    -- use a release tag to download pre-built binaries
+    version = 'v0.*',
+    opts = {
+      -- 'default' for mappings similar to built-in completion
+      keymap = {
+        ['<C-j>'] = { 'show', 'show_documentation', 'hide_documentation' },
+        ['<C-e>'] = { 'hide' },
+        ['<C-y>'] = { 'select_and_accept' },
 
-    -- Setup for command-line completion
-    cmp.setup.cmdline('/', {
-      mapping = cmp.mapping.preset.cmdline(),
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<C-n>'] = { 'select_next', 'fallback' },
+
+        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+
+        ['<Tab>'] = { 'snippet_forward', 'fallback' },
+        ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+      },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = 'normal',
+      },
+      -- default list of enabled providers defined so that you can extend it
+      -- elsewhere in your config, without redefining it, via `opts_extend`
       sources = {
-        { name = 'buffer' },
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        -- optionally disable cmdline completions
+        cmdline = { preset = 'default' },
       },
-    })
-
-    cmp.setup.cmdline(':', {
-      mapping = cmp.mapping.preset.cmdline(),
-      sources = cmp.config.sources({
-        { name = 'path' },
-      }, {
-        { name = 'cmdline' },
-      }),
-    })
-  end,
+      -- experimental signature help support
+      signature = { enabled = true },
+    },
+    -- allows extending the providers array elsewhere in your config
+    -- without having to redefine it
+    opts_extend = { 'sources.default' },
+  },
 }
