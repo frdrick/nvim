@@ -56,13 +56,13 @@ return {
       end,
       desc = '[W]orkspace',
     },
-    {
-      '<leader>p',
-      function()
-        require('which-key').show { global = false }
-      end,
-      desc = '[P]review',
-    },
+    -- {
+    --   '<leader>p',
+    --   function()
+    --     require('which-key').show { global = false }
+    --   end,
+    --   desc = '[P]review',
+    -- },
     {
       '<leader>l',
       function()

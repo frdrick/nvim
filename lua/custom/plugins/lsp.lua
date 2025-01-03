@@ -1,38 +1,44 @@
 return { -- LSP Configuration & Plugins
   {
     'williamboman/mason.nvim',
-    config = function()
-      require('mason').setup()
-    end,
+    -- config = function()
+    --   require('mason').setup()
+    -- end,
     opts = {},
   },
   {
     'williamboman/mason-lspconfig.nvim',
-    config = function()
-      require('mason-lspconfig').setup {
-        ensure_installed = {
-          'lua_ls',
-          'pyright',
-          'clangd',
-          'marksman',
-          -- 'texlab',
-          'html',
-        },
-      }
-    end,
-    opts = {},
+    -- config = function()
+    --   require('mason-lspconfig').setup {
+    --   }
+    -- end,
+    opts = {
+      ensure_installed = {
+        'lua_ls',
+        'ruff',
+        'pyright',
+        'clangd',
+        'marksman',
+        'html',
+        'ltex',
+      },
+    },
   },
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-    config = function()
-      require('mason-tool-installer').setup {
-        ensure_installed = {
-          -- 'autopep8',
-          'stylua',
-        },
-      }
-    end,
-    opts = {},
+    -- config = function()
+    --   require('mason-tool-installer').setup {
+    --   }
+    -- end,
+    opts = {
+      ensure_installed = {
+        'stylua',
+        'black',
+        'isort',
+        'beautysh',
+        'prettier',
+      },
+    },
   },
   --   -- Useful status updates for LSP.
   --   -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -63,7 +69,7 @@ return { -- LSP Configuration & Plugins
           -- to define small helper and utility functions so you don't have to repeat yourself
           -- many times.
           --
-          -- In this case, we create a function that lets us more easily define mappings specific
+          -- In this case, we create a that lets us more easily define mappings specific
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
@@ -130,19 +136,50 @@ return { -- LSP Configuration & Plugins
         end,
       })
       local lspconfig = require 'lspconfig'
+      -- lua
       lspconfig.lua_ls.setup {}
+      -- python
+      lspconfig.ruff.setup {
+        init_options = {
+          settings = {
+            args = {},
+          },
+        },
+      }
       lspconfig.pyright.setup {
         settings = {
+          pyright = {
+            autoImportCompletion = true,
+            -- Using Ruff's import organizer
+            disableOrganizeImports = true,
+          },
           python = {
             analysis = {
               extraPaths = { '/Users/freddymarten/miniforge3/envs/' },
+              -- Ignore all files for analysis to exclusively use Ruff for linting
+              ignore = { '*' },
             },
           },
         },
       }
+      -- c
       lspconfig.clangd.setup {}
+      -- markdown
       lspconfig.marksman.setup {}
+      -- html
       lspconfig.html.setup {}
+      -- shell scripts (sh)
+      lspconfig.bashls.setup {}
+      -- ltex (markdown, tex, ect.)
+      lspconfig.ltex.setup {}
+      -- latex
+      lspconfig.texlab.setup {}
     end,
+  },
+  {
+    'icewind/ltex-client.nvim',
+    -- adds ltex code action functionality
+    -- see ~/.ltex for rules and dictionaries in json format
+    opts = {},
   },
 }

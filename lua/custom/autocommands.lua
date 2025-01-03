@@ -30,13 +30,10 @@ vim.api.nvim_create_user_command('GetPythonPath', function()
   -- print(conda_path)
   print(conda_prefix)
 end, { desc = 'get conda environment' })
-
--- require('lspconfig').pyright.setup {
---   on_new_config = function(config, root_dir)
---     -- Dynamically set the Python path before starting the LSP
---     config.settings = config.settings or {}
---     config.settings.python = config.settings.python or {}
---     config.settings.python.pythonPath = get_python_path()
---   end,
---   root_dir = util.root_pattern('.git', 'pyrightconfig.json', 'setup.py'),
--- }
+-- Optional: Autoformat on save
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*.py',
+  callback = function()
+    require('conform').format { async = false }
+  end,
+})

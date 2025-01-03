@@ -1,10 +1,10 @@
 -- quarto
 return {
-  'quarto-dev/quarto-nvim',
-  opts = {},
-  dependencies = {
-    'jmbuhr/otter.nvim',
-    opts = {},
+  {
+    'quarto-dev/quarto-nvim',
+    dependencies = {
+      'jmbuhr/otter.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
   },
-  ft = { 'quarto' },
 }
