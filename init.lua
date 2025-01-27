@@ -12,6 +12,8 @@ vim.env.PYTHONPATH = '/Users/freddymarten/miniforge3/bin/python'
 vim.g.slime_target = 'tmux'
 -- Disable tmux navigator mappings
 vim.g.tmux_navigator_no_mappings = 1
+-- Disable slime mappings
+vim.g.slime_no_mappings = 1
 
 -- Load keymaps.lua, options.lua and autocommands.lua
 require 'custom.keymaps'

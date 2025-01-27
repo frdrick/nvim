@@ -30,7 +30,7 @@ return {
 
     -- Optional dependencies
     -- dependencies = { { 'echasnovski/mini.icons', opts = {} } },
-    dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons
+    -- dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons
     -- NOTE: see :help oil-actions for a list of shortcuts when oil is open
   },
 }

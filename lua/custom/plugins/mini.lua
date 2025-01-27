@@ -1,5 +1,6 @@
 return { -- Collection of various small independent plugins/modules
   'echasnovski/mini.nvim',
+  version = false,
   config = function()
     -- Better Around/Inside textobjects
     --
@@ -25,8 +26,13 @@ return { -- Collection of various small independent plugins/modules
         update_n_lines = ';n',
       },
     }
-    -- Simple and easy statusline.
-    --  You could remove this setup call if you don't like it,
+    require('mini.pick').setup()
+    require('mini.extra').setup()
+    require('mini.files').setup()
+    require('mini.pairs').setup()
+    -- require('mini.operators').setup()
+    require('mini.move').setup()
+    -- Simple and easy statusline. You could remove this setup call if you don't like it,
     --  and try some other statusline plugin
     local statusline = require 'mini.statusline'
     -- set use_icons to true if you have a Nerd Font

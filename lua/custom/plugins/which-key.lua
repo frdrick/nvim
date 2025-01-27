@@ -22,20 +22,6 @@ return {
       desc = '[F]ind',
     },
     {
-      '<leader>s',
-      function()
-        require('which-key').show { global = false }
-      end,
-      desc = '[S]lime',
-    },
-    {
-      '<leader>sr',
-      function()
-        require('which-key').show { global = false }
-      end,
-      desc = '[R]un',
-    },
-    {
       '<leader>c',
       function()
         require('which-key').show { global = false }
@@ -56,40 +42,41 @@ return {
       end,
       desc = '[W]orkspace',
     },
-    -- {
-    --   '<leader>p',
-    --   function()
-    --     require('which-key').show { global = false }
-    --   end,
-    --   desc = '[P]review',
-    -- },
     {
-      '<leader>l',
+      '<leader>t',
       function()
         require('which-key').show { global = false }
       end,
-      desc = '[L]ine',
+      desc = '[T]oggle',
+    },
+    -- Slime related
+    {
+      '<leader>r',
+      function()
+        require('which-key').show { global = false }
+      end,
+      desc = '[R]e+',
     },
     {
-      '<leader>fa',
+      '<leader>s',
       function()
         require('which-key').show { global = false }
       end,
-      desc = '[A]nd',
+      desc = '[S]lime',
     },
     {
-      '<leader>h',
+      '<leader>se',
       function()
         require('which-key').show { global = false }
       end,
-      desc = '[H]arpoon',
+      desc = '[E]nter',
     },
     {
-      '<leader>ss',
+      '<leader>sr',
       function()
         require('which-key').show { global = false }
       end,
-      desc = '[S]tart',
+      desc = '[R]un',
     },
     {
       '<leader>sq',
