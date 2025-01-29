@@ -7,3 +7,48 @@ vim.g.slime_cell_delimiter = '--'
 -- setup text object
 -- set.smartindent = 1
 -- set.cindent = 1
+-- local ts = vim.treesitter
+-- local parsers = require 'nvim-treesitter.parsers'
+-- local p = function(value)
+--   print(vim.inspect(value))
+-- end
+-- local print_node = function(node)
+--   p(ts.get_node_text(node, 0))
+-- end
+-- local parser = parsers.get_parser()
+-- local lang = parser:lang()
+-- local tree = parser:parse()[1]
+-- local root = tree:root()
+-- local curr_node = ts.get_node()
+-- -- print(curr_node:start())
+-- local find_statement
+-- ---@param node TSNode
+-- find_statement = function(node)
+--   local type = node:type()
+--   if type == 'statement' then
+--     return node
+--   elseif type == 'program' then
+--     return node
+--   else
+--     local parent = node:parent()
+--     return find_statement(parent)
+--   end
+-- end
+--
+-- ---@cast curr_node -nil
+-- find_statement(curr_node)
+
+-- ---@param node TSNode
+-- local function capture_sql(node)
+--   local parent = find_statement(node)
+--   if parent:type() ~= 'statement' then
+--     local query = ts.query.parse(lang, '(statement) @query ')
+--     for _, n, _ in query:iter_captures(node, 0) do
+--       print_node(n)
+--     end
+--   else
+--     return 'No statement found'
+--   end
+-- end
+-- ---@cast curr_node -nil
+-- capture_sql(curr_node)

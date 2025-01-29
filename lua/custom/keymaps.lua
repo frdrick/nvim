@@ -11,7 +11,8 @@ local leader_keymap = function(suffix, rhs, desc, opts)
   opts.desc = desc
   keymap('n', '<Leader>' .. suffix, rhs, opts)
 end
--- NOTE: General keybinds
+-- NOTE: General
+--
 -- Escape key as jk
 keymap({ 'i' }, 'jk', '<esc>', { desc = 'alternative escape mapping' })
 -- and kj
@@ -19,27 +20,38 @@ keymap({ 'i' }, 'kj', '<esc>', { desc = 'alternative escape mapping' })
 -- # symbol to option+3
 keymap('i', '<m-3>', '#', { desc = 'hashtag symbol' })
 -- Paste below line
-keymap('n', '<C-p>', '<Cmd>exe "put! " . v:register<CR>', { desc = '[P]aste below line' })
 keymap({ 'n', 'x' }, '[p', '<Cmd>exe "put! " . v:register<CR>', { desc = 'Paste Above' })
--- keymap({ 'n', 'x' }, ']p', '<Cmd>exe "put "  . v:register<CR>', { desc = 'Paste Below' })
+keymap({ 'n', 'x' }, ']p', '<Cmd>exe "put "  . v:register<CR>', { desc = 'Paste Below' })
 -- TIP: Disable arrow keys in normal mode
 keymap({ 'n', 'v' }, '<left>', '<cmd>echo "Use h to move!!"<CR>')
 keymap({ 'n', 'v' }, '<right>', '<cmd>echo "Use l to move!!"<CR>')
 keymap({ 'n', 'v' }, '<up>', '<cmd>echo "Use k to move!!"<CR>')
 keymap({ 'n', 'v' }, '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---  See `:help wincmd` for a list of all window commands
---  <C-w> opens npane options
-keymap('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-keymap('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-keymap('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-keymap('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- NOTE: Which-key
+local which_keymap = function(suffix, desc, opts)
+  opts = opts or {}
+  opts.desc = desc
+  keymap('n', '<leader>' .. suffix, function()
+    require('which-key').show { global = false }
+  end, opts)
+end
+which_keymap('?', 'Buffer Local Keymaps (which-key})')
+which_keymap('f', '[F]ind')
+which_keymap('c', '[C]ode')
+which_keymap('d', '[D](ocuments/iagnostics)')
+which_keymap('w', '[W]orkspace')
+which_keymap('t', '[T]oggle')
+which_keymap('r', '[R]e+')
+which_keymap('s', '[S]lime')
+which_keymap('se', '[S]lime [E]nter')
+which_keymap('sr', '[S]lime [R]un')
+which_keymap('n', '[N]eovim')
+
 -- NOTE: I believe this means escape ends highlight on searching through next
 keymap('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- NOTE: Diagnostic keymaps
+-- NOTE: Diagnostics
 keymap('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 keymap('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 -- using leader key
@@ -47,24 +59,30 @@ leader_keymap('df', vim.diagnostic.open_float, '[D]iagnostic [F]loat')
 leader_keymap('dd', '<CMD>DiagnosticToggle<cr>', '[D]iagnostic [F]loat')
 leader_keymap('dq', vim.diagnostic.setloclist, '[D]iagnostic [Q]uickfix list')
 
--- Search and replace shortcut
-local cword = vim.fn.expand '<cword>'
+-- NOTE: Search and replace
+--
+-- local cword = vim.fn.expand '<cword>'
 leader_keymap('rp', ':%s/', '[R]e[P]lace')
-
 keymap('v', '<leader>R', ':s/', { desc = '[R]eplace', remap = true })
+-- Grug-far
+leader_keymap('rg', 'GrugFar', 'Replace [G]rugFar')
 
--- Oil shortcut
-keymap('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
-
--- NOTE: Tmux navigator keymaps
+-- NOTE: Naviation
+keymap('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+keymap('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+keymap('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+keymap('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 keymap('n', '<C-h>', ':TmuxNavigateLeft<CR>', { silent = true })
 keymap('n', '<C-j>', ':TmuxNavigateDown<CR>', { silent = true })
 keymap('n', '<C-k>', ':TmuxNavigateUp<CR>', { silent = true })
 keymap('n', '<C-l>', ':TmuxNavigateRight<CR>', { silent = true })
+-- Oil shortcut
+keymap('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 
--- NOTE: Slime keymaps
+-- NOTE: Slime
 keymap('n', 'gs', '<Plug>SlimeMotionSend', { desc = '[S]lime [S]end' })
-leader_keymap('<Leader>', '<Plug>SlimeRegionSend', 'S[L]ime send')
+keymap('v', '<leader><Space>', '<Plug>SlimeRegionSend', { desc = 'S[L]ime send' })
+-- keymap('n', '<leader><Space>', '<Plug>SlimeParagraphSend', { desc = 'S[L]ime send' })
 leader_keymap('sp', '<Plug>SlimeParagraphSend', '[S]lime [P]aragraph')
 leader_keymap('sc', '<Plug>SlimeSendCell', '[S]lime [C]ell')
 leader_keymap('sv', '<Plug>SlimeConfig', '[S]lime [V]ariables')
@@ -109,7 +127,7 @@ function TestFile()
 end
 leader_keymap('st', '<CMD>lua TestFile()<CR>', '[S]lime [T]est')
 
--- NOTE: Toggling shortcuts
+-- NOTE: Toggling
 function ToggleLinebreak()
   if vim.wo.linebreak then
     vim.wo.linebreak = false
@@ -129,7 +147,7 @@ function ToggleMarkdownPreview()
 end
 leader_keymap('tm', '<CMD>lua ToggleMarkdownPreview()<CR>', '[T]oggle [M]arkdown Preview')
 -- LaTex Preview
-leader_keymap('tt', ':VimtexCompile<CR>', '[T]oggle [T]ex Preview')
+-- leader_keymap('tt', ':VimtexCompile<CR>', '[T]oggle [T]ex Preview')
 
 -- NOTE: Fuzzy find
 leader_keymap('f/', '<Cmd>Pick history scope="/"<CR>', '[F]ind "/" history')
@@ -138,15 +156,16 @@ leader_keymap('fb', '<Cmd>Pick buffers<CR>', '[F]ind [B]uffers')
 leader_keymap('ff', '<Cmd>Pick files<CR>', '[F]ind [F]iles')
 leader_keymap('fk', '<Cmd>Pick keymaps<CR>', '[F]ind [K]eymaps')
 leader_keymap('fo', '<Cmd>Pick options<CR>', '[F]ind [O]ptions')
-leader_keymap('fg', '<Cmd>Pick grep_live<CR>', 'Grep live')
+leader_keymap('fg', '<Cmd>Pick grep_live<CR>', '[F]ind [G]rep')
 leader_keymap('fw', '<Cmd>Pick grep pattern="<cword>"<CR>', '[F]ind Grep current [W]ord')
-leader_keymap('fh', '<Cmd>Pick help<CR>', 'Help tags')
+leader_keymap('fh', '<Cmd>Pick help<CR>', '[F]ind [H]elp')
+leader_keymap('fn', '<Cmd>Pick neovim<CR>', '[F]ind [N]eovim')
+leader_keymap('fN', '<Cmd>Pick neovim_grep<CR>', '[F]ind with Grep [N]eovim')
 leader_keymap('fc', '<Cmd>Pick git_commits<CR>', 'Commits (all)')
 leader_keymap('fC', '<Cmd>Pick git_commits path="%"<CR>', 'Commits (current)')
 -- leader_keymap('fd', '<Cmd>Pick diagnostic scope="all"<CR>', '[F]ind workspace [D]iagnostics')
 leader_keymap('fd', '<Cmd>Pick diagnostic scope="current"<CR>', '[F]ind buffer [D]iagnostics')
 leader_keymap('ft', '<Cmd>Pick treesitter<CR>', '[F]ind in [T]reesitter')
-
 -- NOTE: Lsp actions
 --
 -- In C this would take you to the header
@@ -160,3 +179,10 @@ leader_keymap('dD', '<CMD>Pick lsp scope="type_definition"<CR>', 'Type [D]efinit
 leader_keymap('ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 -- Opens a popup that displays documentation about the word under your cursor
 keymap('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
+vim.keymap.set('n', '<leader>,,', ':luafile /Users/freddymarten/.config/nvim/after/ftplugin/sql.lua<CR>')
+
+-- NOTE: Neovim functions
+leader_keymap('ns', ':e $MYVIMRC | :cd %:p:h<cr>', '[S]ettings')
+leader_keymap('nk', ':e ~/.config/nvim/lua/custom/keymaps.lua | :cd %:p:h<cr>', '[K]eymaps')
+leader_keymap('no', ':e ~/.config/nvim/lua/custom/options.lua | :cd %:p:h<cr>', '[O]ptions')
+leader_keymap('na', ':e ~/.config/nvim/lua/custom/autocommands.lua | :cd %:p:h<cr>', '[A]utocommands')

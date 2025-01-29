@@ -27,11 +27,24 @@ return { -- Collection of various small independent plugins/modules
       },
     }
     require('mini.pick').setup()
+
+    MiniPick.registry.neovim = function(local_opts)
+      -- vim.fn.stdpath 'config' gives full pathname of config
+      local opts = { source = { cwd = vim.fn.stdpath 'config', name = 'Neovim Config' } }
+      return MiniPick.builtin.files(local_opts, opts)
+    end
+    MiniPick.registry.neovim_grep = function(local_opts)
+      -- vim.fn.stdpath 'config' gives full pathname of config
+      local opts = { source = { cwd = vim.fn.stdpath 'config', name = 'Grep Neovim Config' } }
+      return MiniPick.builtin.grep_live(local_opts, opts)
+    end
+    -- MiniPick.builtin.cli({ command = { 'echo', 'a\nb\nc' } })
     require('mini.extra').setup()
     require('mini.files').setup()
     require('mini.pairs').setup()
     -- require('mini.operators').setup()
     require('mini.move').setup()
+    require('mini.starter').setup()
     -- Simple and easy statusline. You could remove this setup call if you don't like it,
     --  and try some other statusline plugin
     local statusline = require 'mini.statusline'

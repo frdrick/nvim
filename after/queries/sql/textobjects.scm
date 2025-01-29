@@ -1,3 +1,4 @@
+; extends
 ;full statement
 (statement) @query
 ;subquery inner
