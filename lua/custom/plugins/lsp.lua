@@ -21,6 +21,7 @@ return { -- LSP Configuration & Plugins
         'marksman',
         'html',
         'ltex',
+        'sqlls',
       },
     },
   },
@@ -49,6 +50,11 @@ return { -- LSP Configuration & Plugins
   },
   {
     'neovim/nvim-lspconfig',
+    -- opts = {
+    --   servers = {
+    --     sqlls = {},
+    --   },
+    -- },
     dependencies = {
       {
         'folke/lazydev.nvim',
@@ -121,6 +127,7 @@ return { -- LSP Configuration & Plugins
       -- ltex (markdown, tex, ect.)
       lspconfig.ltex.setup {}
       -- sql
+      lspconfig.sqlls.setup {}
     end,
   },
   {

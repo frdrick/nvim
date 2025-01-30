@@ -44,7 +44,6 @@ return {
             ['@parameter.outer'] = 'v', -- charwise
             ['@function.outer'] = 'V', -- linewise
             ['@class.outer'] = '<c-v>', -- blockwise
-            ['@full_query'] = 'v',
           },
           -- If you set this to `true` (default is `false`) then any textobject is
           -- extended to include preceding or succeeding whitespace. Succeeding
@@ -55,7 +54,10 @@ return {
           -- * query_string: eg '@function.inner'
           -- * selection_mode: eg 'v'
           -- and should return true or false
-          include_surrounding_whitespace = true,
+          include_surrounding_whitespace = {
+            { '@function.inner', 'v', true },
+            { '@query', 'v', false },
+          },
         },
       },
     },
@@ -75,9 +77,5 @@ return {
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     dependencies = 'nvim-treesitter/nvim-treesitter',
-  },
-  {
-    'nvim-treesitter/playground',
-    event = 'BufRead',
   },
 }
