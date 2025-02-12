@@ -15,7 +15,7 @@ return { -- LSP Configuration & Plugins
     opts = {
       ensure_installed = {
         'lua_ls',
-        'ruff',
+        -- 'ruff',
         'pyright',
         'clangd',
         'marksman',
@@ -34,8 +34,8 @@ return { -- LSP Configuration & Plugins
     opts = {
       ensure_installed = {
         'stylua',
-        'black',
-        'isort',
+        -- 'black',
+        -- 'isort',
         'beautysh',
         'prettier',
         -- 'sqlfmt',
@@ -93,18 +93,18 @@ return { -- LSP Configuration & Plugins
       -- lua
       lspconfig.lua_ls.setup {}
       -- python
-      lspconfig.ruff.setup {
-        init_options = {
-          settings = {
-            args = {},
-          },
-        },
-      }
+      -- lspconfig.ruff.setup {
+      --   init_options = {
+      --     settings = {
+      --       args = {},
+      --     },
+      --   },
+      -- }
       lspconfig.pyright.setup {
         settings = {
           pyright = {
             autoImportCompletion = true,
-            -- Using Ruff's import organizer
+            --   -- Using Ruff's import organizer
             disableOrganizeImports = true,
           },
           python = {
@@ -125,7 +125,11 @@ return { -- LSP Configuration & Plugins
       -- shell scripts (sh)
       lspconfig.bashls.setup {}
       -- ltex (markdown, tex, ect.)
-      lspconfig.ltex.setup {}
+      lspconfig.ltex.setup { settings = {
+        ltex = {
+          language = 'en',
+        },
+      } }
       -- sql
       lspconfig.sqlls.setup {}
     end,

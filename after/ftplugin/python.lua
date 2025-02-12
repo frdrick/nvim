@@ -1,25 +1,24 @@
 local set = vim.opt_local
 set.shiftwidth = 4
-local keymap = vim.keymap.set
-local leader_keymap = function(suffix, rhs, desc, opts)
+local Keymap = vim.keymap.set
+local NLeaderKeymap = function(suffix, rhs, desc, opts)
   opts = opts or {}
   opts.desc = desc
-  keymap('n', '<Leader>' .. suffix, rhs, opts)
+  Keymap('n', '<Leader>' .. suffix, rhs, opts)
 end
--- start ipython
-leader_keymap('sei', '<CMD>SlimeSend1 ipython<CR>', '[S]lime [E]nter [I]python')
--- quit ipython
-leader_keymap('sqi', '<CMD>SlimeSend1 quit<CR>', '[S]lime [I]python')
--- start python
-leader_keymap('sep', '<CMD>SlimeSend1 python<CR>', '[S]lime [E]nter [P]ython')
--- quit python
-leader_keymap('sqp', '<CMD>SlimeSend1 quit()<CR>', '[S]lime [P]ython')
+-- run current python file
 function PythonRunFile()
   local python_path = vim.fn.systemlist('which python3')[1]
   local scipt_path = vim.fn.expand '%:p'
   return vim.api.nvim_command(':SlimeSend1 ' .. python_path .. ' ' .. scipt_path)
 end
-leader_keymap('sr', '<CMD>lua PythonRunFile()<CR>', '[P]ython')
+NLeaderKeymap('sr', '<CMD>lua PythonRunFile()<CR>', '[S]lime [R]un file')
+-- run current python file
+function IPythonRunFile()
+  local scipt_path = vim.fn.expand '%:p'
+  return vim.api.nvim_command(':SlimeSend1 %run ' .. scipt_path)
+end
+NLeaderKeymap('si', '<CMD>lua IPythonRunFile()<CR>', '[S]lime [I]python run file')
 -- pytest current file
 function TestFile()
   local expand = vim.fn.expand
@@ -33,4 +32,7 @@ function TestFile()
     vim.notify('Tests not setup for ' .. file_extension .. ' files')
   end
 end
-leader_keymap('st', '<CMD>lua TestFile()<CR>', '[S]lime [T]est')
+NLeaderKeymap('st', '<CMD>lua TestFile()<CR>', '[S]lime [T]est')
+--auto format python file
+-- following global black install (brew install black)
+NLeaderKeymap('rf', ':silent !black %<CR>', '[F]ormat', { silent = true })

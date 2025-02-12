@@ -14,6 +14,8 @@ vim.g.slime_target = 'tmux'
 vim.g.tmux_navigator_no_mappings = 1
 -- Disable slime mappings
 vim.g.slime_no_mappings = 1
+-- Disable mini.surround mappings
+-- vim.g.minisurround_disable = 1
 
 -- Load keymaps.lua, options.lua and autocommands.lua
 require 'custom.keymaps'

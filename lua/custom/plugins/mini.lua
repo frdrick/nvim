@@ -19,11 +19,11 @@ return { -- Collection of various small independent plugins/modules
       mappings = {
         add = ';;',
         delete = ';d',
-        find = ';f',
-        find_left = ';F',
-        highlight = ';h',
+        find = '',
+        find_left = '',
+        highlight = '',
         replace = ';r',
-        update_n_lines = ';n',
+        update_n_lines = '',
       },
     }
     require('mini.pick').setup()

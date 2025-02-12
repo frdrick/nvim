@@ -19,13 +19,13 @@ function CpPath()
   vim.fn.setreg('+', path)
   vim.notify('Copied "' .. path .. '" to the clipboard!')
 end
-Keymap('n', 'yp', '<CMD>lua CpPath()<CR>', { desc = '[P]ath', remap = true })
+NLeaderKeymap('yp', '<CMD>lua CpPath()<CR>', '[P]ath')
 function CpDir()
   local dir = vim.fn.expand '%:p:h'
   vim.fn.setreg('+', dir)
   vim.notify('Copied "' .. dir .. '" to the clipboard!')
 end
-Keymap('n', 'yd', '<CMD>lua CpDir()<CR>', { desc = '[D]irectory', remap = true })
+NLeaderKeymap('yd', '<CMD>lua CpDir()<CR>', '[D]irectory')
 -- Escape key as jk
 Keymap({ 'i' }, 'jk', '<esc>', { desc = 'alternative escape mapping' })
 -- and kj
@@ -40,6 +40,12 @@ Keymap({ 'n', 'v' }, '<left>', '<cmd>echo "Use h to move!!"<CR>')
 Keymap({ 'n', 'v' }, '<right>', '<cmd>echo "Use l to move!!"<CR>')
 Keymap({ 'n', 'v' }, '<up>', '<cmd>echo "Use k to move!!"<CR>')
 Keymap({ 'n', 'v' }, '<down>', '<cmd>echo "Use j to move!!"<CR>')
+
+-- Faster quitting of all buffers
+NLeaderKeymap('wq', ':wqa<CR>', '[Q]uit all')
+NLeaderKeymap('wa', ':q!a<CR>', '[A]bort all')
+NLeaderKeymap('ww', ':w<CR>', 'Save')
+-- NLeaderKeymap('ws', ':wa<CR>', '[S]ave all')
 
 -- NOTE: Which-key
 local which_keymap = function(suffix, desc, opts)
@@ -57,9 +63,8 @@ which_keymap('w', '[W]orkspace')
 which_keymap('t', '[T]oggle')
 which_keymap('r', '[R]e+')
 which_keymap('s', '[S]lime')
-which_keymap('se', '[S]lime [E]nter')
-which_keymap('sr', '[S]lime [R]un')
 which_keymap('n', '[N]eovim')
+which_keymap('y', '[Y]ank')
 
 -- NOTE: I believe this means escape ends highlight on searching through next
 Keymap('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -80,7 +85,7 @@ Keymap('v', '<leader>R', ':s/', { desc = '[R]eplace', remap = true })
 -- Grug-far
 NLeaderKeymap('rg', 'GrugFar', 'Replace [G]rugFar')
 
--- NOTE: Naviation
+-- NOTE: Navigation
 Keymap('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 Keymap('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 Keymap('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
@@ -137,8 +142,10 @@ NLeaderKeymap('fw', '<Cmd>Pick grep pattern="<cword>"<CR>', '[F]ind Grep current
 NLeaderKeymap('fh', '<Cmd>Pick help<CR>', '[F]ind [H]elp')
 NLeaderKeymap('fn', '<Cmd>Pick neovim<CR>', '[F]ind [N]eovim')
 NLeaderKeymap('fN', '<Cmd>Pick neovim_grep<CR>', '[F]ind with Grep [N]eovim')
-NLeaderKeymap('fc', '<Cmd>Pick git_commits<CR>', 'Commits (all)')
-NLeaderKeymap('fC', '<Cmd>Pick git_commits path="%"<CR>', 'Commits (current)')
+NLeaderKeymap('fc', '<Cmd>Pick git_commits<CR>', '[F]ind [C]ommits (all)')
+NLeaderKeymap('fC', '<Cmd>Pick git_commits path="%"<CR>', '[F]ind [C]ommits (current)')
+
+NLeaderKeymap('fr', '<Cmd>Pick registers<CR>', '[F]ind [R]egisters')
 -- leader_keymap('fd', '<Cmd>Pick diagnostic scope="all"<CR>', '[F]ind workspace [D]iagnostics')
 NLeaderKeymap('fd', '<Cmd>Pick diagnostic scope="current"<CR>', '[F]ind buffer [D]iagnostics')
 NLeaderKeymap('ft', '<Cmd>Pick treesitter<CR>', '[F]ind in [T]reesitter')
@@ -155,7 +162,8 @@ NLeaderKeymap('dD', '<CMD>Pick lsp scope="type_definition"<CR>', 'Type [D]efinit
 NLeaderKeymap('ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 -- Opens a popup that displays documentation about the word under your cursor
 Keymap('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
-NLeaderKeymap(',,', ':luafile /Users/freddymarten/.config/nvim/after/ftplugin/sql.lua<CR>')
+-- Run a specific file from any other file
+-- NLeaderKeymap(',,', ':luafile /Users/freddymarten/.config/nvim/after/ftplugin/sql.lua<CR>')
 
 -- NOTE: Neovim functions
 NLeaderKeymap('ns', ':e $MYVIMRC | :cd %:p:h<cr>', '[S]ettings')

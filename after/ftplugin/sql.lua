@@ -21,7 +21,7 @@ local NLeaderKeymap = function(suffix, rhs, desc, opts)
   Keymap('n', '<Leader>' .. suffix, rhs, opts)
 end
 
--- find
+-- find node
 local FindNode
 ---@param name string
 ---@param node TSNode
