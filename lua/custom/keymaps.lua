@@ -42,9 +42,8 @@ Keymap({ 'n', 'v' }, '<up>', '<cmd>echo "Use k to move!!"<CR>')
 Keymap({ 'n', 'v' }, '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Faster quitting of all buffers
-NLeaderKeymap('wq', ':wqa<CR>', '[Q]uit all')
-NLeaderKeymap('wa', ':q!a<CR>', '[A]bort all')
-NLeaderKeymap('ww', ':w<CR>', 'Save')
+-- use ZZ to save+quit
+-- use ZQ to quit without saving
 -- NLeaderKeymap('ws', ':wa<CR>', '[S]ave all')
 
 -- NOTE: Which-key
