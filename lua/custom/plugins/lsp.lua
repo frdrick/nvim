@@ -131,7 +131,14 @@ return { -- LSP Configuration & Plugins
         },
       } }
       -- sql
-      lspconfig.sqlls.setup {}
+      lspconfig.sqlls.setup {
+        settings = {
+          sql = {
+            -- Example: Set the default dialect (e.g., "mysql", "postgresql", "sqlite")
+            dialect = 'sqlite',
+          },
+        },
+      }
     end,
   },
   {

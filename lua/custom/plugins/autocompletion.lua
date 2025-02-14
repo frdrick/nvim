@@ -36,7 +36,6 @@ return {
           'path',
           'snippets',
           'buffer',
-          -- 'dadbod'
         },
         -- optionally disable cmdline completions
         cmdline = { preset = 'default' },

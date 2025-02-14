@@ -44,7 +44,7 @@ Keymap({ 'n', 'v' }, '<down>', '<cmd>echo "Use j to move!!"<CR>')
 -- Faster quitting of all buffers
 -- use ZZ to save+quit
 -- use ZQ to quit without saving
--- NLeaderKeymap('ws', ':wa<CR>', '[S]ave all')
+NLeaderKeymap('ZW', ':wa<CR>', '[S]ave all')
 
 -- NOTE: Which-key
 local which_keymap = function(suffix, desc, opts)
