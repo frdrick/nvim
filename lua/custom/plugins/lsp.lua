@@ -16,7 +16,7 @@ return { -- LSP Configuration & Plugins
       ensure_installed = {
         'lua_ls',
         -- 'ruff',
-        'pyright',
+        'pylsp',
         'clangd',
         'marksman',
         'html',
@@ -100,18 +100,34 @@ return { -- LSP Configuration & Plugins
       --     },
       --   },
       -- }
-      lspconfig.pyright.setup {
+      -- lspconfig.pyright.setup {
+      --   settings = {
+      --     pyright = {
+      --       autoImportCompletion = true,
+      --       --   -- Using Ruff's import organizer
+      --       disableOrganizeImports = true,
+      --     },
+      --     python = {
+      --       analysis = {
+      --         extraPaths = { '/Users/freddymarten/miniforge3/envs/' },
+      --         -- Ignore all files for analysis to exclusively use Ruff for linting
+      --         ignore = { '*' },
+      --       },
+      --     },
+      --   },
+      -- }
+      lspconfig.pylsp.setup {
         settings = {
-          pyright = {
-            autoImportCompletion = true,
-            --   -- Using Ruff's import organizer
-            disableOrganizeImports = true,
-          },
-          python = {
-            analysis = {
-              extraPaths = { '/Users/freddymarten/miniforge3/envs/' },
-              -- Ignore all files for analysis to exclusively use Ruff for linting
-              ignore = { '*' },
+          pylsp = {
+            plugins = {
+              pyflakes = { enabled = false },
+              pycodestyle = { enabled = false },
+              autopep8 = { enabled = false },
+              yapf = { enabled = false },
+              mccabe = { enabled = false },
+              pylsp_mypy = { enabled = false },
+              pylsp_black = { enabled = false },
+              pylsp_isort = { enabled = false },
             },
           },
         },

@@ -31,9 +31,9 @@ vim.api.nvim_create_user_command('GetPythonPath', function()
   print(conda_prefix)
 end, { desc = 'get conda environment' })
 -- Optional: Autoformat on save
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*.py',
-  callback = function()
-    require('conform').format { async = false }
-  end,
-})
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   pattern = '*.py',
+--   callback = function()
+--     require('conform').format { async = false }
+--   end,
+-- })

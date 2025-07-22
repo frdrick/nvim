@@ -24,13 +24,12 @@ return { -- Autoformat
       yaml = { 'prettier' },
       markdown = { 'prettier' },
       -- Conform can also run multiple formatters sequentially
-      python = { 'ruff' },
+      -- removes unused package names from python files
+      python = { 'ruff_format' },
       -- You can use a sub-list to tell conform to run *until* a formatter
       -- is found.
-      -- javascript = { { "prettierd", "prettier" } },
+      javascript = { 'prettier' },
       -- sql = { 'sql-formatter' },
     },
   },
-  -- config = function()
-  -- end,
 }
